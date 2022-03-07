@@ -7,16 +7,17 @@ public class ThirdPersonMovement : MonoBehaviour
     public Animator anim;
 
     public CharacterController controller;
+    public Collider hand;
     public Transform cam;
     public float speed = 6f;
     public float turnSmoothTime = 0.1f;
     float time;
-    public float WaitTime = 1.05f;
+    public float WaitTime = 1.05f, ClobberingTime = 0.525f;
     float turnSmoothVelocity;
 
 	void Start()
 	{
-
+        hand.enabled = !hand.enabled;
     }
 
 	// Update is called once per frame
@@ -36,20 +37,25 @@ public class ThirdPersonMovement : MonoBehaviour
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
 		}
 
-        time += Time.deltaTime;
-
         if (time > WaitTime)
         {
             time = 0;
             speed = 6f;
         }
 
+        time += Time.deltaTime;
+
         if (Input.GetButtonDown("Fire1"))
-		{
-            anim.SetTrigger("punch");
+        {
+            if (time > ClobberingTime)
+            {
+                hand.enabled = !hand.enabled;
+            }
 
             time = 0;
             speed = 0f;
+
+            anim.SetTrigger("punch");
         }
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))

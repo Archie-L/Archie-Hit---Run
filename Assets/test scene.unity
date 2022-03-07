@@ -815,7 +815,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871848910}
-  m_LocalRotation: {x: 0.056926243, y: 0.000000057227094, z: -0.000000003263015, w: 0.9983784}
+  m_LocalRotation: {x: 0.056926243, y: 0.000000057219918, z: -0.0000000032626055, w: 0.9983784}
   m_LocalPosition: {x: 0, y: 6.79, z: -18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1043,7 +1043,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343753341}
-  m_LocalRotation: {x: 0.056926265, y: 0.00000004759353, z: -0.0000000027137226, w: 0.9983784}
+  m_LocalRotation: {x: 0.056926265, y: 0.0000000475849, z: -0.0000000027132305, w: 0.9983784}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1065,6 +1065,7 @@ GameObject:
   - component: {fileID: 1385999361}
   - component: {fileID: 1385999360}
   - component: {fileID: 1385999359}
+  - component: {fileID: 1385999365}
   m_Layer: 0
   m_Name: Npc
   m_TagString: Untagged
@@ -1082,7 +1083,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 0
+  m_Speed: 1.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1091,7 +1092,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.9999999
-  m_BaseOffset: 0.99999994
+  m_BaseOffset: 0.9
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1385999360
@@ -1106,10 +1107,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eb692005eeb6644bb396842de88d5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  self: {fileID: 1385999364}
+  self: {fileID: 1385999358}
+  player: {fileID: 1501686411}
   agent: {fileID: 1385999359}
   walkPointRange: 10
   PointSet: 0
+  thrust: 500
 --- !u!136 &1385999361
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1188,6 +1191,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1385999365
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385999358}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1501686411
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,8 +1218,9 @@ GameObject:
   - component: {fileID: 1501686412}
   - component: {fileID: 1501686414}
   - component: {fileID: 1501686413}
+  - component: {fileID: 1501686415}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1235,10 +1255,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 2336652512263554330}
   controller: {fileID: 1501686414}
+  hand: {fileID: 649571147054404938}
   cam: {fileID: 871848913}
   speed: 6
   turnSmoothTime: 0.1
   WaitTime: 1.05
+  ClobberingTime: 0.525
 --- !u!143 &1501686414
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1251,11 +1273,25 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2
-  m_Radius: 0.6
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &1501686415
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501686411}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1585619518
 GameObject:
@@ -1629,7 +1665,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883121814}
-  m_LocalRotation: {x: 0.09897817, y: -0.000000008560947, z: 8.5152807e-10, w: 0.99508965}
+  m_LocalRotation: {x: 0.09897817, y: 0.000000008560945, z: -8.515279e-10, w: 0.99508965}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

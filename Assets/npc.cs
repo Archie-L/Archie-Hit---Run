@@ -7,15 +7,26 @@ public class npc : MonoBehaviour
 {
     private Transform target;
     public GameObject self;
+    public GameObject player;
     public NavMeshAgent agent;
     public float walkPointRange;
 	private Vector3 newPos;
     public bool PointSet;
+    Rigidbody rb;
+    public float thrust = 2000f;
+	Vector3 m_EulerAngleVelocity;
+    float time;
+    public float WaitTime = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
         PointSet = false;
+        rb = GetComponent<Rigidbody>();
+        agent = GetComponent<NavMeshAgent>();
+        m_EulerAngleVelocity = new Vector3(500, 0, 0);
+
+        gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }
 
     // Update is called once per frame
@@ -37,14 +48,25 @@ public class npc : MonoBehaviour
 		{
             PointSet = false;
 		}
+
+        if (time > WaitTime && )
+        {
+            gameObject.GetComponent<NavMeshAgent>().enabled = true;
+        }
+
     }
 
 	void OnTriggerEnter(Collider other)
 	{
 		if(other.gameObject.tag == "player fist")
-		{
+        {
+            gameObject.GetComponent<NavMeshAgent>().enabled = false;
+
+            rb.AddForce(transform.up * thrust);
+            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
+            rb.MoveRotation(rb.rotation * deltaRotation);
+
             Debug.Log("hit");
-            Destroy(gameObject);
 		}
 	}
 
