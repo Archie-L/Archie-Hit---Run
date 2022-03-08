@@ -17,11 +17,13 @@ public class npc : MonoBehaviour
 	Vector3 m_EulerAngleVelocity;
     float time;
     public float WaitTime = 5f;
+    public bool KnockedOver;
 
     // Start is called before the first frame update
     void Start()
     {
         PointSet = false;
+        KnockedOver = false;
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         m_EulerAngleVelocity = new Vector3(500, 0, 0);
@@ -32,7 +34,9 @@ public class npc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (!PointSet)
+        time += Time.deltaTime;
+
+        if (!PointSet)
 		{
             FindPoint();
         }
@@ -49,17 +53,22 @@ public class npc : MonoBehaviour
             PointSet = false;
 		}
 
-        if (time > WaitTime && )
+        if (time > WaitTime && KnockedOver)
         {
             gameObject.GetComponent<NavMeshAgent>().enabled = true;
+            KnockedOver = false;
         }
 
     }
 
 	void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.tag == "player fist")
+		if(other.gameObject.tag == "player fist" && !KnockedOver)
         {
+            time = 0;
+
+            KnockedOver = true;
+
             gameObject.GetComponent<NavMeshAgent>().enabled = false;
 
             rb.AddForce(transform.up * thrust);
