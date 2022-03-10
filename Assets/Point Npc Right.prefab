@@ -760,7 +760,7 @@ GameObject:
   - component: {fileID: 6334887617590256002}
   m_Layer: 0
   m_Name: Point Npc Right
-  m_TagString: Untagged
+  m_TagString: npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -859,7 +859,6 @@ MonoBehaviour:
   self: {fileID: 6334887617590257273}
   player: {fileID: 0}
   agent: {fileID: 6334887617590257272}
-  thrust: 500
   WaitTime: 5
   UpTime: 8.5
   StopSpeed: 0

@@ -19,26 +19,28 @@ public class points : MonoBehaviour
 		{
             time = 0;
 
-            int randomChild = Random.Range(1, 4);
+            Vector3 pos;
+
+            int randomChild = Random.Range(1, 5);
             if (randomChild == 1)
             {
-                Instantiate(prefab, pointOne.position, Quaternion.identity);
+                pos = pointOne.position;
             }
-            else
             if (randomChild == 2)
             {
-                Instantiate(prefab, pointTwo.position, Quaternion.identity);
+                pos = pointTwo.position;
             }
-            else
             if (randomChild == 3)
             {
-                Instantiate(prefab, pointThree.position, Quaternion.identity);
+                pos = pointThree.position;
             }
             else
-            if (randomChild == 4)
             {
-                Instantiate(prefab, pointFour.position, Quaternion.identity);
+                pos = pointFour.position;
             }
+
+            npc_points npc = Instantiate(prefab, pos, Quaternion.identity).GetComponent<npc_points>();
+            npc.spawnPos = randomChild;
         }
     }
 }

@@ -12,7 +12,6 @@ public class npc_points : MonoBehaviour
     public GameObject player;
     public NavMeshAgent agent;
     Rigidbody rb;
-    public float thrust = 500f;
 	Vector3 m_EulerAngleVelocity;
     float time;
     public float WaitTime = 5f, UpTime = 8.5f;
@@ -20,7 +19,9 @@ public class npc_points : MonoBehaviour
     public bool KnockedOver, GetUp;
     public Transform[] points;
 
-    private int destPoint = 0;
+    private int destPoint;
+
+    [HideInInspector] public int spawnPos;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,8 @@ public class npc_points : MonoBehaviour
 		{
             points[i] = parent.GetChild(i).transform;
 		}
+
+        destPoint = spawnPos + 1;
 
         GotoNextPoint();
 
@@ -85,8 +88,10 @@ public class npc_points : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.tag == "player fist" && !KnockedOver)
+		if(other.gameObject.tag == "player fist" && !KnockedOver || other.gameObject.tag == "car bumper" && !KnockedOver)
         {
+            float thrust = Random.Range(200, 750);
+
             anim.SetTrigger("knocked");
 
             time = 0;

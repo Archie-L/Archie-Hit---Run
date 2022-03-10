@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8455bce35e388564eb82a3901c1068f3, type: 3}
+  m_Name: MKGlowResourcesHDRP
+  m_EditorClassIdentifier: 
+  _sm40Shader: {fileID: 4800000, guid: 54f75877c80bcf3429965bd5ca63735f, type: 3}
+  _sm40GeometryShader: {fileID: 4800000, guid: 42a7d820e3042934682d2f5a1abdbb85, type: 3}
+  _preBlitShader: {fileID: 4800000, guid: 26bdda2876398fa4fa7c0438ed372792, type: 3}

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - player fist
+  - car
+  - npc
+  - car bumper
   layers:
   - Default
   - TransparentFX
