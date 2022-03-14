@@ -19,6 +19,8 @@ public class car_npc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rb.isKinematic = false;
+
         rb = GetComponent<Rigidbody>();
         m_EulerAngleVelocity = new Vector3(500, 0, 0);
 
@@ -33,8 +35,6 @@ public class car_npc : MonoBehaviour
 
         GotoNextPoint();
         agent = GetComponent<NavMeshAgent>();
-
-        player = GameObject.Find("Player");
 
         gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }
@@ -60,13 +60,10 @@ public class car_npc : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject == player)
-        {
-            agent.speed = StopSpeed;
-		}
-
         if(other.gameObject.tag == "car bumper")
 		{
+            rb.isKinematic = true;
+
             float thrust = 400f;
              
             gameObject.GetComponent<NavMeshAgent>().enabled = false;
@@ -78,12 +75,5 @@ public class car_npc : MonoBehaviour
             Debug.Log("hit");
         }
 	}
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject == player)
-        {
-            agent.speed = WalkSpeed;
-        }
-    }
 }
 
