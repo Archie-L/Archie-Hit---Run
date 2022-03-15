@@ -8,10 +8,10 @@ public class points : MonoBehaviour
     public GameObject prefab;
     public Transform pointOne, pointTwo, pointThree, pointFour;
     public float spawnTime = 5f;
-    float time;
+	float time;
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         time += Time.deltaTime;
 
@@ -19,28 +19,24 @@ public class points : MonoBehaviour
 		{
             time = 0;
 
-            Vector3 pos;
-
             int randomChild = Random.Range(1, 5);
             if (randomChild == 1)
             {
-                pos = pointOne.position;
+                Instantiate(prefab, pointOne.position, Quaternion.identity);
             }
             if (randomChild == 2)
             {
-                pos = pointTwo.position;
+                Instantiate(prefab, pointTwo.position, Quaternion.identity);
             }
             if (randomChild == 3)
             {
-                pos = pointThree.position;
+                Instantiate(prefab, pointThree.position, Quaternion.identity);
             }
-            else
+            if (randomChild == 4)
             {
-                pos = pointFour.position;
+                Instantiate(prefab, pointFour.position, Quaternion.identity);
             }
 
-            npc_points npc = Instantiate(prefab, pos, Quaternion.identity).GetComponent<npc_points>();
-            npc.spawnPos = randomChild;
         }
     }
 }

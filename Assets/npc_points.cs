@@ -21,8 +21,6 @@ public class npc_points : MonoBehaviour
 
     private int destPoint;
 
-    [HideInInspector] public int spawnPos;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -34,8 +32,6 @@ public class npc_points : MonoBehaviour
 		{
             points[i] = parent.GetChild(i).transform;
 		}
-
-        destPoint = spawnPos + 1;
 
         GotoNextPoint();
 
@@ -90,8 +86,6 @@ public class npc_points : MonoBehaviour
 	{
 		if(other.gameObject.tag == "player fist" && !KnockedOver || other.gameObject.tag == "car bumper" && !KnockedOver)
         {
-            float thrust = Random.Range(200, 750);
-
             anim.SetTrigger("knocked");
 
             time = 0;
@@ -102,9 +96,12 @@ public class npc_points : MonoBehaviour
             agent.speed = StopSpeed;
             gameObject.GetComponent<NavMeshAgent>().enabled = false;
 
-            rb.AddForce(transform.up * thrust);
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
-            rb.MoveRotation(rb.rotation * deltaRotation);
+            var thrust = Random.Range(200, 750);
+            var thrust2 = Random.Range(200, 750);
+            var force = transform.position - other.transform.position;
+
+            rb.AddForce(force * thrust);
+            rb.AddForce(transform.up * thrust2);
 
             Debug.Log("hit");
 		}

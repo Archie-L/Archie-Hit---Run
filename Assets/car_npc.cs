@@ -9,7 +9,6 @@ public class car_npc : MonoBehaviour
     Rigidbody rb;
     public NavMeshAgent agent;
     public GameObject player;
-	Vector3 m_EulerAngleVelocity;
     float time;
     public float StopSpeed = 0f, WalkSpeed = 14f;
     public Transform[] points;
@@ -19,11 +18,10 @@ public class car_npc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb.isKinematic = false;
+        agent = GetComponent<NavMeshAgent>();
+        gameObject.GetComponent<NavMeshAgent>().enabled = true;
 
         rb = GetComponent<Rigidbody>();
-        m_EulerAngleVelocity = new Vector3(500, 0, 0);
-
         Transform parent = GameObject.Find("road points").transform;
 
         points = new Transform[parent.childCount];
@@ -34,9 +32,6 @@ public class car_npc : MonoBehaviour
 		}
 
         GotoNextPoint();
-        agent = GetComponent<NavMeshAgent>();
-
-        gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }
 
     // Update is called once per frame
@@ -58,19 +53,16 @@ public class car_npc : MonoBehaviour
         destPoint = (destPoint + 1) % points.Length;
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider c)
 	{
-        if(other.gameObject.tag == "car bumper")
-		{
-            rb.isKinematic = true;
-
-            float thrust = 400f;
-             
+        if (c.gameObject.tag == "Player" || c.gameObject.tag == "car bumper")
+        {
             gameObject.GetComponent<NavMeshAgent>().enabled = false;
 
-            rb.AddForce(transform.up * thrust);
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
-            rb.MoveRotation(rb.rotation * deltaRotation);
+            var thrust = 100;
+            var force = transform.position - c.transform.position;
+
+            rb.AddForce(force * thrust);
 
             Debug.Log("hit");
         }
