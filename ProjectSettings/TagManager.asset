@@ -9,6 +9,7 @@ TagManager:
   - car
   - npc
   - car bumper
+  - npc fist
   layers:
   - Default
   - TransparentFX

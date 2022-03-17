@@ -10,6 +10,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public Collider hand;
     public Transform cam;
     public float speed = 6f;
+    public float health = 10f;
     public float turnSmoothTime = 0.1f;
     float time;
     public float WaitTime = 1.05f, ClobberingTime = 0.525f;
@@ -18,10 +19,19 @@ public class ThirdPersonMovement : MonoBehaviour
     public float jumpSpeed = 8f;
     public float gravity = 20f;
     Vector3 moveVector;
+    private State state;
     private Vector3 moveDirection = Vector3.zero;
+
+    private enum State
+    {
+        Normal,
+        Dead
+    }
 
     void Start()
 	{
+        state = State.Normal;
+
         Cursor.lockState = CursorLockMode.Locked;
 
         hand.enabled = !hand.enabled;
@@ -32,6 +42,20 @@ public class ThirdPersonMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+        switch (state)
+        {
+            default:
+            case State.Normal:
+                CharacterMovement();
+                break;
+            case State.Dead:
+                Dead();
+                break;
+        }
+    }
+
+    void CharacterMovement()
+	{
         time += Time.deltaTime;
 
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -48,14 +72,14 @@ public class ThirdPersonMovement : MonoBehaviour
         controller.Move(moveVector * Time.deltaTime);
 
         if (direction.magnitude >= 0.1f)
-		{
+        {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
-		}
+        }
 
         if (time > ClobberingTime && Clobbering)
         {
@@ -80,7 +104,7 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && Clobbering == false)
-		{
+        {
             anim.SetBool("running", true);
             speed = 12f;
         }
@@ -92,18 +116,18 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
-		{
+        {
             Walk();
         }
 
         if (Input.GetKeyUp(KeyCode.W))
         {
-            if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-			{
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
                 Walk();
             }
-			else
-			{
+            else
+            {
                 StopWalk();
                 anim.SetBool("running", false);
             }
@@ -112,9 +136,9 @@ public class ThirdPersonMovement : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.A))
         {
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-			{
+            {
                 Walk();
-			}
+            }
             else
             {
                 StopWalk();
@@ -149,7 +173,25 @@ public class ThirdPersonMovement : MonoBehaviour
         }
     }
 
-    void Walk()
+	void OnTriggerEnter(Collider other)
+	{
+		if(other.gameObject.tag == "npc fist")
+		{
+            health = health - 1f;
+
+            if (health <= 0f)
+            {
+                state = State.Dead;
+            }
+		}
+	}
+
+    void Dead()
+    {
+        anim.SetTrigger("die");
+    }
+
+	void Walk()
 	{
         anim.SetBool("trigger", true);
 	}
