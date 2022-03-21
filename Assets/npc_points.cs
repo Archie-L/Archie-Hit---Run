@@ -49,7 +49,7 @@ public class npc_points : MonoBehaviour
 
         KnockedOver = false;
         GetUp = false;
-        Angry = true;
+        Angry = false;
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         m_EulerAngleVelocity = new Vector3(500, 0, 0);
