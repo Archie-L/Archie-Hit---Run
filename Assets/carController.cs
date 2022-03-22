@@ -38,8 +38,8 @@ public class carController : MonoBehaviour
 
     private void HandleMotor()
     {
-        frontLeft.motorTorque = verticalInput * motorForce;
-        frontRight.motorTorque = verticalInput * motorForce;
+        rearLeft.motorTorque = verticalInput * motorForce;
+        rearRight.motorTorque = verticalInput * motorForce;
         currentBreakForce = isBreaking ? breakForce : 0f;
         ApplyBreaking();
     }
@@ -49,7 +49,7 @@ public class carController : MonoBehaviour
         frontLeft.brakeTorque = currentBreakForce;
         frontRight.brakeTorque = currentBreakForce;
         rearLeft.brakeTorque = currentBreakForce;
-        frontRight.brakeTorque = currentBreakForce;
+        rearRight.brakeTorque = currentBreakForce;
     }
 
     private void HandleSteering()
