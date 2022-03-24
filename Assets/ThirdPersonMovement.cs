@@ -9,6 +9,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public CharacterController controller;
     public Collider hand;
     public Transform cam;
+    public bool Blocking, Parry;
     public float speed = 6f;
     public float health = 10f;
     public float turnSmoothTime = 0.1f;
@@ -93,7 +94,7 @@ public class ThirdPersonMovement : MonoBehaviour
             Clobbering = false;
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Clobbering = true;
 
@@ -103,24 +104,46 @@ public class ThirdPersonMovement : MonoBehaviour
             anim.SetTrigger("punch");
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && Clobbering == false)
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+		{
+            Blocking = true;
+            Parry = true;
+
+            StopWalk();
+
+            time = 0;
+            speed = 0f;
+            anim.SetBool("blocking", true);
+
+            StartCoroutine(ParryTime());
+        }
+
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            Blocking = false;
+
+            speed = 6f;
+            anim.SetBool("blocking", false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Clobbering == false && !Blocking)
         {
             anim.SetBool("running", true);
             speed = 12f;
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftShift) && Clobbering == false)
+        if (Input.GetKeyUp(KeyCode.LeftShift) && Clobbering == false && !Blocking)
         {
             anim.SetBool("running", false);
             speed = 6f;
         }
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.W) && !Blocking || Input.GetKeyDown(KeyCode.A) && !Blocking || Input.GetKeyDown(KeyCode.S) && !Blocking || Input.GetKeyDown(KeyCode.D) && !Blocking)
         {
             Walk();
         }
 
-        if (Input.GetKeyUp(KeyCode.W))
+        if (Input.GetKeyUp(KeyCode.W) && !Blocking)
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {
@@ -133,7 +156,7 @@ public class ThirdPersonMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.A))
+        if (Input.GetKeyUp(KeyCode.A) && !Blocking)
         {
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
             {
@@ -146,7 +169,7 @@ public class ThirdPersonMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyUp(KeyCode.S) && !Blocking)
         {
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             {
@@ -159,7 +182,7 @@ public class ThirdPersonMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.D) && !Blocking)
         {
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S))
             {
@@ -173,18 +196,41 @@ public class ThirdPersonMovement : MonoBehaviour
         }
     }
 
+    IEnumerator ParryTime()
+	{
+        yield return new WaitForSeconds(0.2f);
+        Parry = false;
+
+	}
+
 	void OnTriggerEnter(Collider other)
 	{
 		if(other.gameObject.tag == "npc fist")
 		{
-            health = health - 1f;
-
-            if (health <= 0f)
+            if (!Blocking)
             {
-                state = State.Dead;
+                health = health - 1f;
+
+                if (health <= 0f)
+                {
+                    state = State.Dead;
+                }
             }
-		}
-	}
+        }
+
+        if (other.gameObject.tag == "bat")
+        {
+			if (!Blocking)
+            {
+                health = health - 2f;
+
+                if (health <= 0f)
+                {
+                    state = State.Dead;
+                }
+            }
+        }
+    }
 
     void Dead()
     {

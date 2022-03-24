@@ -58,7 +58,8 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -7.105427e-17, y: 1.7968783, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 5714533669754239959}
   m_Father: {fileID: 298215463452206377}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -635,6 +636,102 @@ Transform:
   m_Father: {fileID: 9069214170912672915}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -9.7348585, y: 24.746979, z: 34.09756}
+--- !u!1 &4901546644308599149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5714533669754239959}
+  - component: {fileID: 8710455968946386034}
+  - component: {fileID: 6846939024711090360}
+  - component: {fileID: 400189663512963520}
+  m_Layer: 0
+  m_Name: bat
+  m_TagString: bat
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5714533669754239959
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901546644308599149}
+  m_LocalRotation: {x: 0.49628973, y: 0.49629098, z: -0.50368273, w: -0.5036819}
+  m_LocalPosition: {x: 0.37, y: 0.67, z: 0.04}
+  m_LocalScale: {x: 12.266164, y: 12.266164, z: 110.68576}
+  m_Children: []
+  m_Father: {fileID: 4469131318501011273}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -89.153, z: 90}
+--- !u!33 &8710455968946386034
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901546644308599149}
+  m_Mesh: {fileID: 2534964839176971238, guid: 5b55efa20431e5543bed0d8693a45c8b, type: 3}
+--- !u!23 &6846939024711090360
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901546644308599149}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -3846018093981099296, guid: 5b55efa20431e5543bed0d8693a45c8b, type: 3}
+  - {fileID: -6478536213147159724, guid: 5b55efa20431e5543bed0d8693a45c8b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &400189663512963520
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901546644308599149}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.03813855, y: 0.038138516, z: 0.072296865}
+  m_Center: {x: -0.0000008476197, y: 0.000000057301236, z: 0.024389958}
 --- !u!1 &4945345301656671285
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,8 +968,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 3130369368089013727}
   self: {fileID: 6334887617590257273}
+  bat: {fileID: 4901546644308599149}
+  fist: {fileID: 666789434427142065}
+  batCol: {fileID: 400189663512963520}
+  playerT: {fileID: 0}
   player: {fileID: 0}
   agent: {fileID: 6334887617590257272}
+  health: 0
   WaitTime: 5
   UpTime: 8.5
   StopSpeed: 0
@@ -880,6 +982,9 @@ MonoBehaviour:
   KnockedOver: 0
   GetUp: 0
   Angry: 0
+  BatAngry: 0
+  Attacking: 0
+  Parried: 0
   points:
   - {fileID: 0}
   - {fileID: 0}

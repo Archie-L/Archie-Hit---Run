@@ -10,6 +10,7 @@ TagManager:
   - npc
   - car bumper
   - npc fist
+  - bat
   layers:
   - Default
   - TransparentFX
