@@ -23,6 +23,8 @@ public class npc_points : MonoBehaviour
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
     public bool KnockedOver, GetUp, Angry, BatAngry, Attacking, Parried;
     public Transform[] points;
+    public ThirdPersonMovement ThirdPersonMovement;
+    public GameObject Tpm;
 
     private int destPoint;
 
@@ -31,7 +33,8 @@ public class npc_points : MonoBehaviour
         Normal,
         Angry,
         Weapon,
-        Parry
+        Parry,
+        Dead
     }
 
     // Start is called before the first frame update
@@ -42,10 +45,13 @@ public class npc_points : MonoBehaviour
         fist.enabled = !fist.enabled;
         batCol.enabled = !batCol.enabled;
 
+        Transform parent = GameObject.Find("points").transform;
+
         playerT = GameObject.Find("Player").transform;
         player = GameObject.Find("Player");
+        Tpm = GameObject.Find("Player");
 
-        Transform parent = GameObject.Find("points").transform;
+        ThirdPersonMovement = Tpm.GetComponent<ThirdPersonMovement>();
 
         points = new Transform[parent.childCount];
 
@@ -69,6 +75,11 @@ public class npc_points : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (health <= 0f)
+		{
+            state = State.Dead;
+		}
+
         switch (state)
         {
             default:
@@ -84,11 +95,19 @@ public class npc_points : MonoBehaviour
             case State.Parry:
                 ParriedController();
                 break;
+            case State.Dead:
+                Dead();
+                break;
         }
     }
 
     void ParriedController()
 	{
+        agent.speed = 0f;
+
+        new WaitForSeconds(4.6f);
+        Parried = false;
+
         if (Angry && !Parried)
         {
             state = State.Angry;
@@ -98,16 +117,7 @@ public class npc_points : MonoBehaviour
         {
             state = State.Weapon;
         }
-
-        agent.speed = 0f;
-        StartCoroutine(isParried());
-	}
-
-    IEnumerator isParried()
-	{
-        yield return new WaitForSeconds(4.6f);
-        Parried = false;
-	}
+    }
 
     void AngryController()
     {
@@ -125,7 +135,6 @@ public class npc_points : MonoBehaviour
             agent.speed = 0f;
             anim.SetTrigger("Attack");
             StartCoroutine(Attack());
-            StartCoroutine(ParryWait());
             Attacking = true;
         }
     }
@@ -210,7 +219,7 @@ public class npc_points : MonoBehaviour
 
         if (time > UpTime && GetUp)
         {
-            var aggro = Random.Range(1, 3);
+            /*var aggro = Random.Range(1, 3);
 
             if (aggro == 1)
             {
@@ -225,7 +234,7 @@ public class npc_points : MonoBehaviour
                     Angry = true;
                     Debug.Log("Angry");
                 }
-            }
+            }*/
 
             agent.speed = WalkSpeed;
             GetUp = false;
@@ -261,11 +270,25 @@ public class npc_points : MonoBehaviour
         destPoint = (destPoint + 1) % points.Length;
     }
 
+    void Dead()
+	{
+        anim.SetTrigger("die");
+    }
+
     void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.tag == "player fist" && !Knocke​dOver && !Angry || other.gameObject.tag == "car bumper" && !KnockedOver && !Angry)
+		if(other.gameObject.tag == "player fist" && !Knocke​dOver|| other.gameObject.tag == "car bumper" && !KnockedOver)
         {
             anim.SetTrigger("knocked");
+
+            if(Angry || BatAngry)
+			{
+                health = health - 10f;
+			}
+			else
+			{
+				ThirdPersonMovement.MeterIncrease();
+			}
 
             time = 0;
 

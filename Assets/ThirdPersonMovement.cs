@@ -5,7 +5,6 @@ using UnityEngine;
 public class ThirdPersonMovement : MonoBehaviour
 {
     public Animator anim;
-
     public CharacterController controller;
     public Collider hand;
     public Transform cam;
@@ -14,6 +13,8 @@ public class ThirdPersonMovement : MonoBehaviour
     public float health = 10f;
     public float turnSmoothTime = 0.1f;
     float time;
+    public float crimeMeter;
+    public float maxMeter;
     public float WaitTime = 1.05f, ClobberingTime = 0.525f;
     float turnSmoothVelocity;
     bool Clobbering;
@@ -26,6 +27,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private enum State
     {
         Normal,
+        Wanted,
         Dead
     }
 
@@ -43,11 +45,20 @@ public class ThirdPersonMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+        if(crimeMeter == maxMeter)
+		{
+            state = State.Wanted;
+		}
+
         switch (state)
         {
             default:
             case State.Normal:
                 CharacterMovement();
+                break;
+            case State.Wanted:
+                CharacterMovement();
+                WantedController();
                 break;
             case State.Dead:
                 Dead();
@@ -107,7 +118,6 @@ public class ThirdPersonMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1))
 		{
             Blocking = true;
-            Parry = true;
 
             StopWalk();
 
@@ -115,6 +125,9 @@ public class ThirdPersonMovement : MonoBehaviour
             speed = 0f;
             anim.SetBool("blocking", true);
 
+            new WaitForSeconds(0.2f);
+            Debug.Log("test");
+            Parry = true;
             StartCoroutine(ParryTime());
         }
 
@@ -203,6 +216,11 @@ public class ThirdPersonMovement : MonoBehaviour
 
 	}
 
+    void WantedController()
+	{
+
+	}
+
 	void OnTriggerEnter(Collider other)
 	{
 		if(other.gameObject.tag == "npc fist")
@@ -246,4 +264,9 @@ public class ThirdPersonMovement : MonoBehaviour
 	{
         anim.SetBool("trigger", false);
     }
+
+    public void MeterIncrease()
+	{
+        crimeMeter = crimeMeter + 10f;
+	}
 }

@@ -974,7 +974,7 @@ MonoBehaviour:
   playerT: {fileID: 0}
   player: {fileID: 0}
   agent: {fileID: 6334887617590257272}
-  health: 0
+  health: 100
   WaitTime: 5
   UpTime: 8.5
   StopSpeed: 0

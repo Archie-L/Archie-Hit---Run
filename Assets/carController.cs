@@ -38,8 +38,8 @@ public class carController : MonoBehaviour
 
     private void HandleMotor()
     {
-        rearLeft.motorTorque = verticalInput * motorForce;
-        rearRight.motorTorque = verticalInput * motorForce;
+        rearLeft.motorTorque = -verticalInput * motorForce;
+        rearRight.motorTorque = -verticalInput * motorForce;
         currentBreakForce = isBreaking ? breakForce : 0f;
         ApplyBreaking();
     }

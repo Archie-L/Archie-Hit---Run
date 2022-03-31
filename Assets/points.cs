@@ -7,7 +7,7 @@ public class points : MonoBehaviour
     public GameObject parentOfChild;
     public GameObject prefab;
     public Transform pointOne, pointTwo, pointThree, pointFour;
-    public float spawnTime = 5f;
+    public float spawnTime;
 	float time;
 
     // Update is called once per frame
