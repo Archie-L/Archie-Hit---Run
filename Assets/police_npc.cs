@@ -11,8 +11,9 @@ public class police_npc : MonoBehaviour
     public float length;
     public float speed;
     private State state;
+    public ParticleSystem test;
 
-	private enum State
+    private enum State
 	{
         Checking,
         Shooting,
@@ -68,7 +69,7 @@ public class police_npc : MonoBehaviour
 		{
             anim.SetBool("walking", false);
 
-            state = State.Checking;
+            state = State.Shooting;
 		}
 
     }
@@ -82,7 +83,8 @@ public class police_npc : MonoBehaviour
 
     void Shooting()
 	{
-
+        test.Play();
+        Debug.Log("Shooting");
         StartCoroutine(WaitTest());
     }
 
@@ -90,6 +92,7 @@ public class police_npc : MonoBehaviour
 	{
         new WaitForSeconds(10);
         length = Random.Range(1, 15);
+        state = State.Checking;
         yield break;
     }
 
@@ -99,7 +102,10 @@ public class police_npc : MonoBehaviour
 	}
 
     void DistCheck()
-	{
+    {
+        test.Stop();
+        Debug.Log("Stopped Shooting");
+
         float dist = Vector3.Distance(player.position, self.position);
 
         if (dist < 1.5f)
@@ -108,7 +114,7 @@ public class police_npc : MonoBehaviour
 		}
 		else
 		{
-            state = State.Shooting;
+            state = State.Walking;
 		}
     }
 }

@@ -18,7 +18,7 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
+  - ignore lighting
   - 
   - PostProcessing
   - Not in Reflection
