@@ -23,7 +23,6 @@ public class npc_points : MonoBehaviour
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
     public bool KnockedOver, GetUp, Angry, BatAngry, Attacking, Parried;
     public Transform[] points;
-    public ThirdPersonMovement ThirdPersonMovement;
     public GameObject Tpm;
 
     private int destPoint;
@@ -50,8 +49,6 @@ public class npc_points : MonoBehaviour
         playerT = GameObject.Find("Player").transform;
         player = GameObject.Find("Player");
         Tpm = GameObject.Find("Player");
-
-        ThirdPersonMovement = Tpm.GetComponent<ThirdPersonMovement>();
 
         points = new Transform[parent.childCount];
 
@@ -287,8 +284,8 @@ public class npc_points : MonoBehaviour
 			}
 			else
 			{
-				ThirdPersonMovement.MeterIncrease();
-			}
+                Tpm.GetComponent<ThirdPersonMovement>().MeterIncrease();
+            }
 
             time = 0;
 

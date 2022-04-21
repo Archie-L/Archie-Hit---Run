@@ -23,6 +23,10 @@ public class ThirdPersonMovement : MonoBehaviour
     Vector3 moveVector;
     private State state;
     private Vector3 moveDirection = Vector3.zero;
+    public GameObject police;
+    public Vector3 spawnPoint;
+    public float spawnPointRange;
+    float seconds = 10f;
 
     private enum State
     {
@@ -45,9 +49,11 @@ public class ThirdPersonMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        if(crimeMeter == maxMeter)
+        if(crimeMeter >= maxMeter)
 		{
             state = State.Wanted;
+
+            crimeMeter = 100f;
 		}
 
         switch (state)
@@ -218,8 +224,19 @@ public class ThirdPersonMovement : MonoBehaviour
 
     void WantedController()
 	{
+        float randomZ = Random.Range(-spawnPointRange, spawnPointRange);
+        float randomX = Random.Range(-spawnPointRange, spawnPointRange);
 
-	}
+        spawnPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        StartCoroutine(PoliceSpawnTime());
+    }
+
+    IEnumerator PoliceSpawnTime()
+    {
+        yield return new WaitForSeconds(seconds);
+        Instantiate(police, spawnPoint, Quaternion.identity);
+    }
 
 	void OnTriggerEnter(Collider other)
 	{
@@ -267,6 +284,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public void MeterIncrease()
 	{
-        crimeMeter = crimeMeter + 10f;
+        crimeMeter = crimeMeter + 50f;
 	}
 }
