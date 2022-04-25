@@ -923,7 +923,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871848910}
-  m_LocalRotation: {x: 0.056926243, y: 0.000000057222795, z: -0.0000000032627703, w: 0.9983784}
+  m_LocalRotation: {x: 0.056926243, y: 0.00000005720287, z: -0.000000003261634, w: 0.9983784}
   m_LocalPosition: {x: 0, y: 5, z: -18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -6161,7 +6161,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343753341}
-  m_LocalRotation: {x: 0.05692626, y: 0.000000046559883, z: -0.000000002654785, w: 0.9983784}
+  m_LocalRotation: {x: 0.05692626, y: 0.000000046535387, z: -0.0000000026533884, w: 0.9983784}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -15723,6 +15723,7 @@ GameObject:
   - component: {fileID: 6762503763117512245}
   - component: {fileID: 6762503763117512246}
   - component: {fileID: 6762503763117512247}
+  - component: {fileID: 6762503763117512248}
   m_Layer: 0
   m_Name: the true reborn (1)
   m_TagString: Untagged
@@ -15775,6 +15776,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fecbaec80fb263344b76d41b6a7e678b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 6762503763117512248}
+  player: {fileID: 1501686412}
+  anim: {fileID: 6762503763117512245}
+--- !u!195 &6762503763117512248
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6762503763117512244}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &6766783992484029358
 GameObject:
   m_ObjectHideFlags: 0
