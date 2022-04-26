@@ -10,8 +10,10 @@ public class police_npc : MonoBehaviour
     public Animator anim;
     public float length;
     public float speed;
+    public float speed2;
     private State state;
     public ParticleSystem test;
+    public bool Wait;
 
     private enum State
 	{
@@ -25,6 +27,8 @@ public class police_npc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        test.Stop();
+
         state = State.Walking;
 
         length = Random.Range(1, 15);
@@ -61,23 +65,35 @@ public class police_npc : MonoBehaviour
         var q = Quaternion.LookRotation(player.position - transform.position);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, speed * Time.deltaTime);
 
-        if (length > 0)
+        float step = speed2 * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, player.position, step);
+
+        if (length > 0 && Wait == true)
 		{
             StartCoroutine(StepWait());
         }
-        else if(length <= 0)
+        else if(length <= 0 && Wait == false)
 		{
             anim.SetBool("walking", false);
 
             state = State.Shooting;
-		}
 
+            Wait = true;
+        }
+
+
+        float dist = Vector3.Distance(player.position, self.position);
+        if (dist < 1.5f)
+        {
+            state = State.Arresting;
+        }
     }
 
     IEnumerator StepWait()
-	{
-        new WaitForSeconds(1);
-        length--;
+    {
+        new WaitForSecondsRealtime(length);
+        Wait = false;
+        length = 0f;
         yield break;
 	}
 
@@ -90,7 +106,7 @@ public class police_npc : MonoBehaviour
 
     IEnumerator WaitTest()
 	{
-        new WaitForSeconds(10);
+        new WaitForSecondsRealtime(10);
         length = Random.Range(1, 15);
         state = State.Checking;
         yield break;

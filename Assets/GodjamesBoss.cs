@@ -12,7 +12,16 @@ public class GodjamesBoss : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-		agent.speed = 3f;
+		agent.speed = 0f;
+		StartCoroutine(Intro());
+	}
+
+	IEnumerator Intro()
+	{
+		new WaitForSecondsRealtime(2.333f);
+		agent.speed = 1f;
+		anim.SetBool("Walk", true);
+		yield break;
 	}
 
 	private void Update()
@@ -34,7 +43,7 @@ public class GodjamesBoss : MonoBehaviour
 		if (other.gameObject.tag == "Player")
 		{
 			anim.SetBool("Walk", true);
-			agent.speed = 3f;
+			agent.speed = 1f;
 		}
 	}
 }
