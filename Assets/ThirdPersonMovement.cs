@@ -27,6 +27,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public Vector3 spawnPoint;
     public float spawnPointRange;
     float seconds = 10f;
+    bool spawned;
 
     private enum State
     {
@@ -229,12 +230,17 @@ public class ThirdPersonMovement : MonoBehaviour
 
         spawnPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-        StartCoroutine(PoliceSpawnTime());
+		if (!spawned)
+        {
+            spawned = true;
+            StartCoroutine(PoliceSpawnTime());
+        }
     }
 
     IEnumerator PoliceSpawnTime()
     {
         yield return new WaitForSeconds(seconds);
+        spawned = false;
         Instantiate(police, spawnPoint, Quaternion.identity);
     }
 

@@ -27,6 +27,8 @@ public class police_npc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("Player").transform;
+
         test.Stop();
 
         state = State.Walking;
@@ -60,7 +62,6 @@ public class police_npc : MonoBehaviour
     void Walking()
     {
         anim.SetBool("walking", true);
-        Debug.Log(length);
 
         var q = Quaternion.LookRotation(player.position - transform.position);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, speed * Time.deltaTime);

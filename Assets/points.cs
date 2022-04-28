@@ -4,39 +4,38 @@ using UnityEngine;
 
 public class points : MonoBehaviour
 {
-    public GameObject parentOfChild;
-    public GameObject prefab;
-    public Transform pointOne, pointTwo, pointThree, pointFour;
+    public GameObject prefabRight, prefabLeft;
     public float spawnTime;
 	float time;
+    public float maxSpawned, currentSpawned;
+
+    public int randomNumb;
 
     // Update is called once per frame
     public void Update()
     {
         time += Time.deltaTime;
 
-        if(time > spawnTime)
+        if(time > spawnTime && currentSpawned <= maxSpawned)
 		{
+            currentSpawned++;
+
+            Transform[] childs = gameObject.GetComponentsInChildren<Transform>();
+            randomNumb = Random.Range(0, childs.Length);
+            Debug.Log(randomNumb);
+            Transform randomObject = childs[randomNumb];
+
             time = 0;
 
-            int randomChild = Random.Range(1, 5);
-            if (randomChild == 1)
-            {
-                Instantiate(prefab, pointOne.position, Quaternion.identity);
+            int randPrefab = Random.Range(0, 2);
+            if(randPrefab == 0)
+			{
+                Instantiate(prefabRight, randomObject.position, Quaternion.identity);
             }
-            if (randomChild == 2)
+            if (randPrefab == 1)
             {
-                Instantiate(prefab, pointTwo.position, Quaternion.identity);
+                Instantiate(prefabLeft, randomObject.position, Quaternion.identity);
             }
-            if (randomChild == 3)
-            {
-                Instantiate(prefab, pointThree.position, Quaternion.identity);
-            }
-            if (randomChild == 4)
-            {
-                Instantiate(prefab, pointFour.position, Quaternion.identity);
-            }
-
         }
     }
 }

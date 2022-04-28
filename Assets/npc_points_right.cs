@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class npc_points : MonoBehaviour
+public class npc_points_right : MonoBehaviour
 {
     public Animator anim;
 
@@ -24,8 +24,9 @@ public class npc_points : MonoBehaviour
     public bool KnockedOver, GetUp, Angry, BatAngry, Attacking, Parried;
     public Transform[] points;
     public GameObject Tpm;
-
-    private int destPoint;
+    GameObject spawnNumb;
+    public int destPoint;
+    public GameObject pointRand;
 
     private enum State
     {
@@ -41,8 +42,13 @@ public class npc_points : MonoBehaviour
     {
         state = State.Normal;
 
+        pointRand = GameObject.Find("points");
+
         fist.enabled = !fist.enabled;
         batCol.enabled = !batCol.enabled;
+
+        destPoint = pointRand.GetComponent<points>().randomNumb;
+        
 
         Transform parent = GameObject.Find("points").transform;
 
@@ -199,13 +205,13 @@ public class npc_points : MonoBehaviour
         }
     }
 
-    void NpcMovement()
+    public void NpcMovement()
 	{
         time += Time.deltaTime;
 
         if (time > WaitTime && KnockedOver)
         {
-            gameObject.GetComponent<NavMeshAgent > ().enabled = true;
+            gameObject.GetComponent<NavMeshAgent>().enabled = true;
 
             anim.SetTrigger("getting up");
             GetUp = true;
