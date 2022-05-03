@@ -2944,7 +2944,7 @@ MonoBehaviour:
   prefabRight: {fileID: 6334887617590257273, guid: bae99dcc1677cdb4492017e4df612872, type: 3}
   prefabLeft: {fileID: 6334887617590257273, guid: 3610cc96281a3c34ba3bce4dfc9ec0d1, type: 3}
   spawnTime: 0.25
-  maxSpawned: 99
+  maxSpawned: 49
   currentSpawned: 0
   randomNumb: 0
 --- !u!1 &831584442

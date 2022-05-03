@@ -27,13 +27,14 @@ public class ThirdPersonMovement : MonoBehaviour
     public Vector3 spawnPoint;
     public float spawnPointRange;
     float seconds = 10f;
-    bool spawned;
+    bool spawned, rolling, wanted;
 
     private enum State
     {
         Normal,
         Wanted,
-        Dead
+        Dead,
+        Rolling
     }
 
     void Start()
@@ -53,7 +54,7 @@ public class ThirdPersonMovement : MonoBehaviour
         if(crimeMeter >= maxMeter)
 		{
             state = State.Wanted;
-
+            wanted = true;
             crimeMeter = 100f;
 		}
 
@@ -69,6 +70,9 @@ public class ThirdPersonMovement : MonoBehaviour
                 break;
             case State.Dead:
                 Dead();
+                break;
+            case State.Rolling:
+                Roll();
                 break;
         }
     }
@@ -87,6 +91,12 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             moveVector += Physics.gravity;
         }
+
+		if (Input.GetKeyDown(KeyCode.Space))
+        {
+            state = State.Rolling;
+            anim.SetTrigger("roll");
+		}
 
         controller.Move(moveVector * Time.deltaTime);
 
@@ -223,6 +233,27 @@ public class ThirdPersonMovement : MonoBehaviour
 
 	}
 
+    void Roll()
+	{
+        rolling = true;
+        StartCoroutine(iFrames());
+	}
+
+    IEnumerator iFrames()
+	{
+
+        yield return new WaitForSecondsRealtime(1.6f);
+        rolling = false;
+        if(wanted)
+		{
+            state = State.Wanted;
+		}
+		else
+		{
+            state = State.Normal;
+		}
+    }
+
     void WantedController()
 	{
         float randomZ = Random.Range(-spawnPointRange, spawnPointRange);
@@ -250,7 +281,7 @@ public class ThirdPersonMovement : MonoBehaviour
 		{
             if (!Blocking)
             {
-                health = health - 1f;
+                health--;
 
                 if (health <= 0f)
                 {

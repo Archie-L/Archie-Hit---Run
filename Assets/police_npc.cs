@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class police_npc : MonoBehaviour
 {
@@ -69,11 +67,11 @@ public class police_npc : MonoBehaviour
         float step = speed2 * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, player.position, step);
 
-        if (length > 0 && Wait == true)
+        if (Wait)
 		{
             StartCoroutine(StepWait());
         }
-        else if(length <= 0 && Wait == false)
+        else if(!Wait)
 		{
             anim.SetBool("walking", false);
 
@@ -81,7 +79,6 @@ public class police_npc : MonoBehaviour
 
             Wait = true;
         }
-
 
         float dist = Vector3.Distance(player.position, self.position);
         if (dist < 1.5f)
@@ -92,22 +89,21 @@ public class police_npc : MonoBehaviour
 
     IEnumerator StepWait()
     {
-        new WaitForSecondsRealtime(length);
+        yield return new WaitForSeconds(length);
         Wait = false;
         length = 0f;
-        yield break;
 	}
 
     void Shooting()
 	{
-        test.Play();
+        //test.Play();
         Debug.Log("Shooting");
         StartCoroutine(WaitTest());
     }
 
     IEnumerator WaitTest()
 	{
-        new WaitForSecondsRealtime(10);
+        new WaitForSeconds(10);
         length = Random.Range(1, 15);
         state = State.Checking;
         yield break;
@@ -120,7 +116,7 @@ public class police_npc : MonoBehaviour
 
     void DistCheck()
     {
-        test.Stop();
+        //test.Stop();
         Debug.Log("Stopped Shooting");
 
         float dist = Vector3.Distance(player.position, self.position);
