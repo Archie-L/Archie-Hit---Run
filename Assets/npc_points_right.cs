@@ -9,6 +9,7 @@ public class npc_points_right : MonoBehaviour
 
     private Transform target;
     public GameObject self;
+    public Transform selfT;
     public GameObject bat;
     public BoxCollider fist, batCol;
     public Transform playerT;
@@ -101,6 +102,17 @@ public class npc_points_right : MonoBehaviour
             case State.Dead:
                 Dead();
                 break;
+        }
+
+        float dist = Vector3.Distance(playerT.position, selfT.position);
+        if (dist > 300f)
+        {
+            agent.speed = StopSpeed;
+            
+        }
+        else if (dist < 300f)
+        {
+            agent.speed = WalkSpeed;
         }
     }
 
@@ -222,7 +234,7 @@ public class npc_points_right : MonoBehaviour
 
         if (time > UpTime && GetUp)
         {
-            /*var aggro = Random.Range(1, 3);
+            var aggro = Random.Range(1, 3);
 
             if (aggro == 1)
             {
@@ -237,7 +249,7 @@ public class npc_points_right : MonoBehaviour
                     Angry = true;
                     Debug.Log("Angry");
                 }
-            }*/
+            }
 
             agent.speed = WalkSpeed;
             GetUp = false;

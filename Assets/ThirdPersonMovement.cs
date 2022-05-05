@@ -241,8 +241,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
     IEnumerator iFrames()
 	{
-
-        yield return new WaitForSecondsRealtime(1.6f);
+        new WaitForSecondsRealtime(1.6f);
         rolling = false;
         if(wanted)
 		{
@@ -252,6 +251,7 @@ public class ThirdPersonMovement : MonoBehaviour
 		{
             state = State.Normal;
 		}
+        yield break;
     }
 
     void WantedController()

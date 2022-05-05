@@ -865,8 +865,8 @@ GameObject:
   - component: {fileID: 6334887617590256003}
   - component: {fileID: 6334887617590256004}
   - component: {fileID: 6334887617590256005}
+  - component: {fileID: -2514536476304830378}
   - component: {fileID: 6334887617590256006}
-  - component: {fileID: 6334887617590257274}
   - component: {fileID: 6334887617590257272}
   - component: {fileID: 6334887617590256002}
   m_Layer: 0
@@ -940,21 +940,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6334887617590256006
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6334887617590257273}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6334887617590257274
+--- !u!114 &-2514536476304830378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -963,11 +949,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6334887617590257273}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d61653b5b84bf742bd0d81b3825fb58, type: 3}
+  m_Script: {fileID: 11500000, guid: e31cc653aea26ba4d9429c29ef4b6fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 3130369368089013727}
   self: {fileID: 6334887617590257273}
+  selfT: {fileID: 6334887617590256003}
   bat: {fileID: 4901546644308599149}
   fist: {fileID: 666789434427142065}
   batCol: {fileID: 400189663512963520}
@@ -985,14 +972,24 @@ MonoBehaviour:
   BatAngry: 0
   Attacking: 0
   Parried: 0
-  points:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  points: []
   Tpm: {fileID: 0}
   destPoint: 0
   pointRand: {fileID: 0}
+--- !u!136 &6334887617590256006
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6334887617590257273}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &6334887617590257272
 NavMeshAgent:
   m_ObjectHideFlags: 0

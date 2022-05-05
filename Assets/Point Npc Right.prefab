@@ -968,6 +968,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 3130369368089013727}
   self: {fileID: 6334887617590257273}
+  selfT: {fileID: 6334887617590256003}
   bat: {fileID: 4901546644308599149}
   fist: {fileID: 666789434427142065}
   batCol: {fileID: 400189663512963520}
@@ -990,6 +991,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  Tpm: {fileID: 0}
+  destPoint: 0
+  pointRand: {fileID: 0}
 --- !u!195 &6334887617590257272
 NavMeshAgent:
   m_ObjectHideFlags: 0
