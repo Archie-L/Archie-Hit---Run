@@ -6,7 +6,7 @@ public class carEnterExit : MonoBehaviour
 {
     public carController script;
     public Transform car, empty;
-    public GameObject Player, carCam;
+    public GameObject Player, carCam, txt;
     public bool inCar;
 
     // Start is called before the first frame update
@@ -15,6 +15,7 @@ public class carEnterExit : MonoBehaviour
         inCar = false;
         script.enabled = false;
         carCam.SetActive(false);
+        txt.SetActive(false);
     }
 
     // Update is called once per frame
@@ -24,23 +25,28 @@ public class carEnterExit : MonoBehaviour
         {
             GetOutCar();
         }
-
-        if (Input.GetKeyDown(KeyCode.F) && !inCar)
-        {
-            GetInCar();
-        }
     }
 
 	private void OnTriggerStay(Collider other)
 	{
-		/*if(other.gameObject.tag == "Player")
-		{
-			if (Input.GetKeyDown(KeyCode.F) && !inCar)
-			{
+        if (other.gameObject.tag == "Player")
+        {
+            txt.SetActive(true);
+
+            if (Input.GetKeyDown(KeyCode.F) && !inCar)
+            {
                 GetInCar();
-			}
-        }*/
+            }
+        }
 	}
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            txt.SetActive(false);
+        }
+    }
 
     void GetInCar()
 	{
@@ -48,6 +54,7 @@ public class carEnterExit : MonoBehaviour
         Player.SetActive(false);
         carCam.SetActive(true);
         script.enabled = true;
+        txt.SetActive(false);
         inCar = true;
     }
 
