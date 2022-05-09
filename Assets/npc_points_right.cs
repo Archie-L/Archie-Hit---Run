@@ -318,8 +318,6 @@ public class npc_points_right : MonoBehaviour
             rb.MoveRotation(rb.rotation * deltaRotation);
 
             rb.AddForce(transform.up * thrust);
-
-            Debug.Log("hit");
 		}
 	}
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public CharacterController controller;
     public Collider hand;
     public Transform cam;
+    public Slider mSlider;
     public bool Blocking, Parry;
     public float speed = 6f;
     public float health = 10f;
@@ -39,6 +41,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
     void Start()
 	{
+        mSlider.maxValue = 100f;
+
         state = State.Normal;
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -51,7 +55,9 @@ public class ThirdPersonMovement : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        if(crimeMeter >= maxMeter)
+        mSlider.value = health;
+
+        if (crimeMeter >= maxMeter)
 		{
             state = State.Wanted;
             wanted = true;
@@ -143,7 +149,7 @@ public class ThirdPersonMovement : MonoBehaviour
             anim.SetBool("blocking", true);
 
             new WaitForSeconds(0.2f);
-            Debug.Log("test");
+            Debug.Log("Parry");
             Parry = true;
             StartCoroutine(ParryTime());
         }
@@ -228,10 +234,11 @@ public class ThirdPersonMovement : MonoBehaviour
 
     IEnumerator ParryTime()
 	{
-        yield return new WaitForSeconds(0.2f);
+        new WaitForSeconds(0.2f);
         Parry = false;
+        yield break;
 
-	}
+    }
 
     void Roll()
 	{
@@ -279,7 +286,7 @@ public class ThirdPersonMovement : MonoBehaviour
 	{
 		if(other.gameObject.tag == "npc fist")
 		{
-            if (!Blocking)
+            if (!Blocking || rolling)
             {
                 health--;
 
@@ -292,7 +299,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         if (other.gameObject.tag == "bat")
         {
-			if (!Blocking)
+			if (!Blocking || rolling)
             {
                 health = health - 2f;
 

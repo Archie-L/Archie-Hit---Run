@@ -14,19 +14,17 @@ public class HarveyFight : MonoBehaviour
     public Transform playerT;
     public GameObject player;
     public NavMeshAgent agent;
-    Rigidbody rb;
     private State state;
     float time;
     public float health;
     public float WaitTime = 5f, UpTime = 8.5f;
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
-    public bool Angry, Attacking, Parried;
-    public GameObject Tpm;
+    public bool Angry, Attacking, Parried, Cooldown;
 
     private enum State
     {
+        Waiting,
         Angry,
-        Weapon,
         Parry,
         Dead
     }
@@ -34,20 +32,16 @@ public class HarveyFight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        state = State.Angry;
+        state = State.Waiting;
 
         fist.enabled = !fist.enabled;
-        
 
         Transform parent = GameObject.Find("points").transform;
 
         playerT = GameObject.Find("Player").transform;
         player = GameObject.Find("Player");
-        Tpm = GameObject.Find("Player");
-
-        Angry = false;
-        rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = StopSpeed;
 
         gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }
@@ -63,6 +57,8 @@ public class HarveyFight : MonoBehaviour
         switch (state)
         {
             default:
+            case State.Waiting:
+                Waiting();
                 break;
             case State.Angry:
                 AngryController();
@@ -76,14 +72,26 @@ public class HarveyFight : MonoBehaviour
         }
     }
 
-    void ParriedController()
+    void Waiting()
 	{
         agent.speed = 0f;
+
+        if (agent.remainingDistance < 10f)
+		{
+            state = State.Angry;
+            anim.SetTrigger("running");
+		}
+
+    }
+
+    void ParriedController()
+	{
+        agent.speed = StopSpeed;
 
         new WaitForSeconds(4.6f);
         Parried = false;
 
-        if (Angry && !Parried)
+        if (!Parried)
         {
             state = State.Angry;
         }
@@ -96,37 +104,48 @@ public class HarveyFight : MonoBehaviour
             state = State.Parry;
         }
 
-        agent.speed = 6f;
+        agent.speed = WalkSpeed;
         agent.Set​​​​​​​​​​​​​​Destination(playerT.position);
 
-        if (agent.remainingDistance < 1.5f && !Attacking || agent.remainingDistance < 1.5f && !Parried)
-        {
-            fist.enabled = !fist.enabled;
-            agent.speed = 0f;
-            anim.SetTrigger("Attack");
-            StartCoroutine(Attack());
-            Attacking = true;
-        }
+        if(agent.remainingDistance < 2.5f)
+		{
+            if (!Attacking && !Parried && !Cooldown)
+            {
+                fist.enabled = fist.enabled;
+                agent.speed = 0f;
+                anim.SetTrigger("Attack");
+                Attacking = true;
+                StartCoroutine(Attack());
+                StartCoroutine(CooldownWait());
+                //StartCoroutine(ParryWait());
+            }
+		}
     }
 
     IEnumerator Attack()
 	{
-        yield return new WaitForSeconds(1f);
+        new WaitForSeconds(1f);
         agent.speed = 0f;
         fist.enabled = !fist.enabled;
         Attacking = false;
+        Cooldown = true;
+        yield break;
+    }
+
+    IEnumerator CooldownWait()
+	{
+        new WaitForSecondsRealtime(4f);
+        Cooldown = false;
+        yield break;
     }
 
     IEnumerator ParryWait()
-	{
+    {
+
         yield return new WaitForSeconds(0.75f);
         Debug.Log("Parry Now");
-        if (player.GetComponent<ThirdPersonMovement>().Parry == true)
+        if (player.GetComponent<ThirdPersonMovement>().Parry == true && agent.remainingDistance < 2.5f)
         {
-            if (Angry)
-            {
-                fist.enabled = !fist.enabled;
-            }
             anim.SetTrigger("Parried");
             Parried = true;
             Debug.Log("Parried");
@@ -142,7 +161,7 @@ public class HarveyFight : MonoBehaviour
 	{
 		if(other.gameObject.tag == "player fist")
         {
-            health = health - 10f;
+            health = health - 1f;
         }
 	}
 }

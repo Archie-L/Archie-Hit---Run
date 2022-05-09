@@ -32,9 +32,11 @@ public class carEnterExit : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             txt.SetActive(true);
+            Debug.Log("CanEnter");
 
-            if (Input.GetKeyDown(KeyCode.F) && !inCar)
+            if (Input.GetKeyUp(KeyCode.F) && !inCar)
             {
+                Debug.Log("Entered");
                 GetInCar();
             }
         }

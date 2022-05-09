@@ -22,7 +22,6 @@ public class points : MonoBehaviour
 
             Transform[] childs = gameObject.GetComponentsInChildren<Transform>();
             randomNumb = Random.Range(0, childs.Length);
-            Debug.Log(randomNumb);
             Transform randomObject = childs[randomNumb];
 
             time = 0;
