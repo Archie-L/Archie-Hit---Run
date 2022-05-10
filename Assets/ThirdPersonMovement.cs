@@ -116,22 +116,18 @@ public class ThirdPersonMovement : MonoBehaviour
             controller.Move(moveDir.normalized * speed * Time.deltaTime);
         }
 
-        if (time > ClobberingTime && Clobbering)
-        {
-            hand.enabled = !hand.enabled;
-        }
-
         if (time > WaitTime && Clobbering)
         {
             time = 0;
             speed = 6f;
+            hand.enabled = false;
             Clobbering = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Clobbering = true;
-
+            hand.enabled = true;
             time = 0;
             speed = 0f;
 

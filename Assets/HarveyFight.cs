@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class HarveyFight : MonoBehaviour
 {
     public Animator anim;
-
-    private Transform target;
     public GameObject self;
     public Transform selfT;
     public BoxCollider fist;
     public Transform playerT;
     public GameObject player;
     public NavMeshAgent agent;
+    public Slider bossBarSlider;
+    public GameObject bossBar;
+    public AudioSource audioSource, death;
     private State state;
     float time;
     public float health;
-    public float WaitTime = 5f, UpTime = 8.5f;
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
+    public float coolDown = 4f;
     public bool Angry, Attacking, Parried, Cooldown;
 
     private enum State
@@ -32,11 +34,11 @@ public class HarveyFight : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        bossBar.SetActive(false);
+
         state = State.Waiting;
 
-        fist.enabled = !fist.enabled;
-
-        Transform parent = GameObject.Find("points").transform;
+        fist.enabled = false;
 
         playerT = GameObject.Find("Player").transform;
         player = GameObject.Find("Player");
@@ -49,10 +51,12 @@ public class HarveyFight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (health <= 0f)
-		{
+        bossBarSlider.value = health;
+
+        if (health <= 0f)
+        {
             state = State.Dead;
-		}
+        }
 
         switch (state)
         {
@@ -68,16 +72,20 @@ public class HarveyFight : MonoBehaviour
                 break;
             case State.Dead:
                 Dead();
+                //StartCoroutine(DeathSound());
                 break;
         }
     }
 
     void Waiting()
 	{
-        agent.speed = 0f;
+        agent.speed = StopSpeed;
 
-        if (agent.remainingDistance < 10f)
+        float dist = Vector3.Distance(playerT.position, selfT.position);
+
+        if (dist < 15f)
 		{
+            audioSource.Play();
             state = State.Angry;
             anim.SetTrigger("running");
 		}
@@ -99,34 +107,51 @@ public class HarveyFight : MonoBehaviour
 
     void AngryController()
     {
+        time += Time.deltaTime;
+
+        bossBar.SetActive(true);
+        death.Play();
+
+        agent.SetDestination(playerT.position);
+
         if (Parried)
         {
             state = State.Parry;
         }
 
         agent.speed = WalkSpeed;
-        agent.Set​​​​​​​​​​​​​​Destination(playerT.position);
 
-        if(agent.remainingDistance < 2.5f)
+        if(agent.remainingDistance < 2f)
 		{
+            agent.speed = 0f;
+
             if (!Attacking && !Parried && !Cooldown)
             {
-                fist.enabled = fist.enabled;
-                agent.speed = 0f;
-                anim.SetTrigger("Attack");
-                Attacking = true;
-                StartCoroutine(Attack());
-                StartCoroutine(CooldownWait());
-                //StartCoroutine(ParryWait());
+                if(time > coolDown)
+				{
+                    time = 0f;
+                    fist.enabled = true;
+                    agent.speed = 0f;
+                    anim.SetTrigger("Attack");
+                    Attacking = true;
+                    StartCoroutine(Attack());
+                    StartCoroutine(CooldownWait());
+                    //StartCoroutine(ParryWait());
+				}
+
             }
 		}
+        if (agent.remainingDistance > 2f)
+		{
+            agent.speed = WalkSpeed;
+        }
     }
 
     IEnumerator Attack()
 	{
         new WaitForSeconds(1f);
         agent.speed = 0f;
-        fist.enabled = !fist.enabled;
+        fist.enabled = false;
         Attacking = false;
         Cooldown = true;
         yield break;
@@ -153,15 +178,27 @@ public class HarveyFight : MonoBehaviour
     }
 
     void Dead()
-	{
+    {
+        agent.speed = StopSpeed;
+        audioSource.Stop();
         anim.SetTrigger("die");
+        StartCoroutine(DeathWait());
     }
+
+    IEnumerator DeathWait()
+	{
+        yield return new WaitForSeconds(10);
+        Destroy(self.gameObject);
+	}
 
     void OnTriggerEnter(Collider other)
 	{
-		if(other.gameObject.tag == "player fist")
+        Debug.Log("entered trigger");
+
+        if (other.gameObject.tag == "player fist" || other.gameObject.tag == "car bumper")
         {
-            health = health - 1f;
+            Debug.Log("damage");
+            health--;
         }
 	}
 }
