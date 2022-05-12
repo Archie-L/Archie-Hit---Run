@@ -57,6 +57,11 @@ public class ThirdPersonMovement : MonoBehaviour
     {
         mSlider.value = health;
 
+        if (health <= 0f)
+        {
+            state = State.Dead;
+        }
+
         if (crimeMeter >= maxMeter)
 		{
             state = State.Wanted;
@@ -285,11 +290,6 @@ public class ThirdPersonMovement : MonoBehaviour
             if (!Blocking || rolling)
             {
                 health--;
-
-                if (health <= 0f)
-                {
-                    state = State.Dead;
-                }
             }
         }
 
@@ -298,11 +298,6 @@ public class ThirdPersonMovement : MonoBehaviour
 			if (!Blocking || rolling)
             {
                 health = health - 2f;
-
-                if (health <= 0f)
-                {
-                    state = State.Dead;
-                }
             }
         }
     }

@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class carController : MonoBehaviour
 {
+    public Transform target, compass;
+    public GameObject arrow;
+    public float speed;
+
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
 
@@ -28,12 +32,29 @@ public class carController : MonoBehaviour
     [SerializeField] private Transform frontRightT;
     [SerializeField] private Transform rearRightT;
 
+    void Start()
+    {
+        arrow.SetActive(false);
+    }
+
     private void FixedUpdate()
     {
         GetInput();
         HandleMotor();
         HandleSteering();
         UpdateWheels();
+
+        var q = Quaternion.LookRotation(target.position - compass.position);
+        compass.rotation = Quaternion.RotateTowards(compass.rotation, q, speed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            arrow.SetActive(true);
+        }
+        else
+        {
+            arrow.SetActive(false);
+        }
     }
 
     private void HandleMotor()

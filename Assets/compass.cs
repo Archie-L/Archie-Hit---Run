@@ -20,7 +20,7 @@ public class compass : MonoBehaviour
         var q = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, q, speed * Time.deltaTime);
 
-        if (Input.GetKey(KeyCode.V))
+        if (Input.GetKey(KeyCode.Tab))
         {
             arrow.SetActive(true);
         }
