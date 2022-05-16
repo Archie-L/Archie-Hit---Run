@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class points : MonoBehaviour
 {
-    public GameObject prefabRight, prefabLeft;
+    public GameObject prefab;
     public float spawnTime;
 	float time;
     public float maxSpawned, currentSpawned;
@@ -26,15 +26,7 @@ public class points : MonoBehaviour
 
             time = 0;
 
-            int randPrefab = Random.Range(0, 2);
-            if(randPrefab == 0)
-			{
-                Instantiate(prefabRight, randomObject.position, Quaternion.identity);
-            }
-            if (randPrefab == 1)
-            {
-                Instantiate(prefabLeft, randomObject.position, Quaternion.identity);
-            }
+            Instantiate(prefab, randomObject.position, Quaternion.identity);
         }
     }
 }

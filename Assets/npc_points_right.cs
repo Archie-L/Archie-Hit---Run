@@ -18,9 +18,10 @@ public class npc_points_right : MonoBehaviour
     Rigidbody rb;
     private State state;
     Vector3 m_EulerAngleVelocity;
-    float time;
+    float time, time2;
     public float health;
     public float WaitTime = 5f, UpTime = 8.5f;
+    float voiceCooldown = 15f;
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
     public bool KnockedOver, GetUp, Angry, BatAngry, Attacking, Parried;
     public Transform[] points;
@@ -28,6 +29,7 @@ public class npc_points_right : MonoBehaviour
     GameObject spawnNumb;
     public int destPoint;
     public GameObject pointRand;
+    public AudioSource fart, hurt, hit1, hit2, promo, npc1, npc2, karen, liquor;
 
     private enum State
     {
@@ -107,12 +109,11 @@ public class npc_points_right : MonoBehaviour
         float dist = Vector3.Distance(playerT.position, selfT.position);
         if (dist > 300f)
         {
-            agent.speed = StopSpeed;
-            
+            anim.enabled = false;
         }
         else if (dist < 300f)
         {
-            agent.speed = WalkSpeed;
+            anim.enabled = true;
         }
     }
 
@@ -160,6 +161,16 @@ public class npc_points_right : MonoBehaviour
         agent.speed = 0f;
         fist.enabled = !fist.enabled;
         Attacking = false;
+
+        var randVoice = Random.Range(1, 3);
+        if (randVoice == 1)
+        {
+            hit1.Play();
+        }
+        if (randVoice == 2)
+        {
+            hit2.Play();
+        }
     }
 
     void BatController()
@@ -194,6 +205,16 @@ public class npc_points_right : MonoBehaviour
             batCol.enabled = !batCol.enabled;
             Attacking = false;
         }
+
+        var randVoice = Random.Range(1, 3);
+        if (randVoice == 1)
+        {
+            hit1.Play();
+        }
+        if (randVoice == 2)
+        {
+            hit2.Play();
+        }
     }
 
     IEnumerator ParryWait()
@@ -220,6 +241,7 @@ public class npc_points_right : MonoBehaviour
     public void NpcMovement()
 	{
         time += Time.deltaTime;
+        time2 += Time.deltaTime;
 
         if (time > WaitTime && KnockedOver)
         {
@@ -230,6 +252,37 @@ public class npc_points_right : MonoBehaviour
             KnockedOver = false;
 
             time = 0f;
+        }
+
+        if (time2 > Random.Range(10, 30))
+		{
+            time2 = 0f;
+
+            var randVoice = Random.Range(1, 7);
+            if (randVoice == 1)
+            {
+                npc1.Play();
+            }
+            if (randVoice == 2)
+            {
+                npc2.Play();
+            }
+            if (randVoice == 3)
+            {
+                fart.Play();
+            }
+            if (randVoice == 4)
+            {
+                promo.Play();
+            }
+            if (randVoice == 5)
+            {
+                liquor.Play();
+            }
+            if (randVoice == 6)
+            {
+                karen.Play();
+            }
         }
 
         if (time > UpTime && GetUp)
@@ -282,7 +335,15 @@ public class npc_points_right : MonoBehaviour
 
         agent.destination = points[destPoint].position;
 
-        destPoint = (destPoint + 1) % points.Length;
+        var forBack = Random.Range(1, 3);
+        if (forBack == 1)
+        {
+            destPoint = (destPoint + 1) % points.Length;
+        }
+        if (forBack == 2)
+        {
+            destPoint = (destPoint - 1) % points.Length;
+        }
     }
 
     void Dead()
@@ -294,6 +355,8 @@ public class npc_points_right : MonoBehaviour
 	{
 		if(other.gameObject.tag == "player fist" && !Knocke​dOver|| other.gameObject.tag == "car bumper" && !KnockedOver)
         {
+            hurt.Play();
+
             anim.SetTrigger("knocked");
 
             if(Angry || BatAngry)
@@ -303,21 +366,21 @@ public class npc_points_right : MonoBehaviour
 			else
 			{
                 Tpm.GetComponent<ThirdPersonMovement>().MeterIncrease();
+
+                KnockedOver = true;
+                GetUp = false;
+
+                agent.speed = StopSpeed;
+                gameObject.GetComponent<NavMeshAgent>().enabled = false;
+
+                var thrust = Random.Range(200, 750);
+                Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
+                rb.MoveRotation(rb.rotation * deltaRotation);
+
+                rb.AddForce(transform.up * thrust);
             }
 
             time = 0;
-
-            KnockedOver = true;
-            GetUp = false;
-
-            agent.speed = StopSpeed;
-            gameObject.GetComponent<NavMeshAgent>().enabled = false;
-
-            var thrust = Random.Range(200, 750);
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
-            rb.MoveRotation(rb.rotation * deltaRotation);
-
-            rb.AddForce(transform.up * thrust);
 		}
 	}
 }
