@@ -9,7 +9,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public CharacterController controller;
     public Collider hand;
     public Transform cam;
-    public Slider mSlider;
+    public Slider mSlider, pSlider;
     public bool Blocking, Parry;
     public float speed = 6f;
     public float health = 10f;
@@ -41,7 +41,8 @@ public class ThirdPersonMovement : MonoBehaviour
 
     void Start()
 	{
-        mSlider.maxValue = 100f;
+        mSlider.maxValue = 50f;
+        pSlider.maxValue = maxMeter;
 
         state = State.Normal;
 

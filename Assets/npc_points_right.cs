@@ -12,7 +12,7 @@ public class npc_points_right : MonoBehaviour
     public Transform selfT;
     public GameObject bat;
     public BoxCollider fist, batCol;
-    public Transform playerT;
+    Transform playerT;
     public GameObject player;
     public NavMeshAgent agent;
     Rigidbody rb;
@@ -21,7 +21,6 @@ public class npc_points_right : MonoBehaviour
     float time, time2;
     public float health;
     public float WaitTime = 5f, UpTime = 8.5f;
-    float voiceCooldown = 15f;
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
     public bool KnockedOver, GetUp, Angry, BatAngry, Attacking, Parried;
     public Transform[] points;
@@ -37,7 +36,8 @@ public class npc_points_right : MonoBehaviour
         Angry,
         Weapon,
         Parry,
-        Dead
+        Dead,
+        Range
     }
 
     // Start is called before the first frame update
@@ -90,6 +90,9 @@ public class npc_points_right : MonoBehaviour
         {
             default:
             case State.Normal:
+                OutOfRange();
+                break;
+            case State.Range:
                 NpcMovement();
                 break;
             case State.Angry:
@@ -107,15 +110,23 @@ public class npc_points_right : MonoBehaviour
         }
 
         float dist = Vector3.Distance(playerT.position, selfT.position);
-        if (dist > 300f)
+        if (dist < 300f)
         {
-            anim.enabled = false;
-        }
-        else if (dist < 300f)
-        {
-            anim.enabled = true;
+            state = State.Range;
         }
     }
+
+    void OutOfRange()
+	{
+        anim.enabled = false;
+        agent.speed = StopSpeed;
+
+        float dist = Vector3.Distance(playerT.position, selfT.position);
+        if (dist > 300f)
+        {
+            state = State.Normal;
+        }
+    } 
 
     void ParriedController()
 	{
@@ -242,6 +253,9 @@ public class npc_points_right : MonoBehaviour
 	{
         time += Time.deltaTime;
         time2 += Time.deltaTime;
+
+        anim.enabled = true;
+        agent.speed = WalkSpeed;
 
         if (time > WaitTime && KnockedOver)
         {

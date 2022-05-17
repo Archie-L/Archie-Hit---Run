@@ -5,6 +5,7 @@ using UnityEngine;
 public class carEnterExit : MonoBehaviour
 {
     public carController script;
+    public compass compass;
     public Transform car, empty;
     public GameObject Player, carCam, txt;
     public bool inCar;
@@ -14,6 +15,7 @@ public class carEnterExit : MonoBehaviour
     {
         inCar = false;
         script.enabled = false;
+        compass.enabled = false;
         carCam.SetActive(false);
         txt.SetActive(false);
     }
@@ -56,6 +58,7 @@ public class carEnterExit : MonoBehaviour
         Player.SetActive(false);
         carCam.SetActive(true);
         script.enabled = true;
+        compass.enabled = true;
         txt.SetActive(false);
         inCar = true;
     }
@@ -66,6 +69,7 @@ public class carEnterExit : MonoBehaviour
         Player.SetActive(true);
         carCam.SetActive(false);
         script.enabled = false;
+        compass.enabled = false;
         inCar = false;
     }
 }
