@@ -5,10 +5,12 @@ public class police_npc : MonoBehaviour
 {
     public Transform player;
     public Transform self;
+    public Transform barrel;
     public Animator anim;
     public float length;
     public float speed;
     public float speed2;
+    public GameObject bullet;
     private State state;
     public ParticleSystem test;
     public bool Wait;
@@ -103,10 +105,14 @@ public class police_npc : MonoBehaviour
 
     IEnumerator WaitTest()
 	{
-        new WaitForSeconds(10);
+        yield return new WaitForSeconds(1);
+
+        GameObject projectile = Instantiate(bullet, barrel.position, Quaternion.identity) as GameObject;
+        projectile.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
+
         length = Random.Range(1, 15);
+
         state = State.Checking;
-        yield break;
     }
 
     void Arresting()

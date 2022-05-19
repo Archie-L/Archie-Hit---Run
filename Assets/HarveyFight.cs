@@ -9,7 +9,6 @@ public class HarveyFight : MonoBehaviour
     public Animator anim;
     public GameObject self;
     public Transform selfT;
-    public BoxCollider fist;
     public Transform playerT;
     public GameObject player;
     public NavMeshAgent agent;
@@ -17,7 +16,7 @@ public class HarveyFight : MonoBehaviour
     public GameObject bossBar;
     public AudioSource audioSource, death;
     private State state;
-    float time;
+    float time; //this is a float variable that is called time. it does fuck all until it doesnt.
     public float health;
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
     public float coolDown = 4f;
@@ -38,8 +37,6 @@ public class HarveyFight : MonoBehaviour
 
         state = State.Waiting;
 
-        fist.enabled = false;
-
         playerT = GameObject.Find("Player").transform;
         player = GameObject.Find("Player");
         agent = GetComponent<NavMeshAgent>();
@@ -51,7 +48,9 @@ public class HarveyFight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bossBarSlider.value = health;
+        health = gameObject.GetComponent<health>().NPCHealth;
+
+        bossBarSlider.value = health; //this sets the bossbarslider value to the same as the health value, which in this case is a variable. thank you for reading, i've been alex solar pannell, and you've been watching archie legg gaming irl in front of a live studio audience partnered with bbc live.
 
         if (health <= 0f)
         {
@@ -107,7 +106,7 @@ public class HarveyFight : MonoBehaviour
 
     void AngryController()
     {
-        time += Time.deltaTime;
+        time += Time.deltaTime; //this is when time does not do fuck all, but instead does an archie moment
 
         bossBar.SetActive(true);
         death.Play();
@@ -130,7 +129,6 @@ public class HarveyFight : MonoBehaviour
                 if(time > coolDown)
 				{
                     time = 0f;
-                    fist.enabled = true;
                     agent.speed = 0f;
                     anim.SetTrigger("Attack");
                     Attacking = true;
@@ -151,7 +149,6 @@ public class HarveyFight : MonoBehaviour
 	{
         new WaitForSeconds(1f);
         agent.speed = 0f;
-        fist.enabled = false;
         Attacking = false;
         Cooldown = true;
         yield break;
@@ -190,15 +187,4 @@ public class HarveyFight : MonoBehaviour
         yield return new WaitForSeconds(10);
         Destroy(self.gameObject);
 	}
-
-    void OnTriggerEnter(Collider other)
-	{
-        Debug.Log("entered trigger");
-
-        if (other.gameObject.tag == "player fist")
-        {
-            Debug.Log("damage");
-            health = health - 5;
-        }
-    }
 }

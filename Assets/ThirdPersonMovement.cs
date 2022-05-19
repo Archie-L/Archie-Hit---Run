@@ -7,7 +7,6 @@ public class ThirdPersonMovement : MonoBehaviour
 {
     public Animator anim;
     public CharacterController controller;
-    public Collider hand;
     public Transform cam;
     public Slider mSlider, pSlider;
     public bool Blocking, Parry;
@@ -48,15 +47,16 @@ public class ThirdPersonMovement : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
 
-        hand.enabled = !hand.enabled;
-
         Clobbering = false;
     }
 
 	// Update is called once per frame
 	void Update()
     {
+        health = gameObject.GetComponent<health>().NPCHealth;
+
         mSlider.value = health;
+        pSlider.value = crimeMeter;
 
         if (health <= 0f)
         {
@@ -126,14 +126,12 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             time = 0;
             speed = 6f;
-            hand.enabled = false;
             Clobbering = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Clobbering = true;
-            hand.enabled = true;
             time = 0;
             speed = 0f;
 
@@ -320,6 +318,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
     public void MeterIncrease()
 	{
-        crimeMeter = crimeMeter + 50f;
+        crimeMeter = crimeMeter + 10f;
 	}
 }

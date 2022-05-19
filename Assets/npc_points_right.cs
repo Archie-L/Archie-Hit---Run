@@ -78,10 +78,44 @@ public class npc_points_right : MonoBehaviour
         gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }
 
+    float prevhealth;
+
     // Update is called once per frame
     void Update()
     {
-		if (health <= 0f)
+        health = gameObject.GetComponent<health>().NPCHealth;
+
+        if (health != prevhealth)
+		{
+            hurt.Play();
+
+            anim.SetTrigger("knocked");
+
+            if (Angry || BatAngry)
+            {
+                health = health - 1f;
+            }
+            else
+            {
+                Tpm.GetComponent<ThirdPersonMovement>().MeterIncrease();
+
+                KnockedOver = true;
+                GetUp = false;
+
+                agent.speed = StopSpeed;
+                gameObject.GetComponent<NavMeshAgent>().enabled = false;
+
+                var thrust = Random.Range(200, 750);
+                Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
+                rb.MoveRotation(rb.rotation * deltaRotation);
+
+                rb.AddForce(transform.up * thrust);
+            }
+
+            time = 0;
+        }
+
+        if (health <= 0f)
 		{
             state = State.Dead;
 		}
@@ -114,6 +148,8 @@ public class npc_points_right : MonoBehaviour
         {
             state = State.Range;
         }
+
+        prevhealth = health;
     }
 
     void OutOfRange()
@@ -364,37 +400,4 @@ public class npc_points_right : MonoBehaviour
 	{
         anim.SetTrigger("die");
     }
-
-    void OnTriggerEnter(Collider other)
-	{
-		if(other.gameObject.tag == "player fist" && !Knocke​dOver|| other.gameObject.tag == "car bumper" && !KnockedOver)
-        {
-            hurt.Play();
-
-            anim.SetTrigger("knocked");
-
-            if(Angry || BatAngry)
-			{
-                health = health - 10f;
-			}
-			else
-			{
-                Tpm.GetComponent<ThirdPersonMovement>().MeterIncrease();
-
-                KnockedOver = true;
-                GetUp = false;
-
-                agent.speed = StopSpeed;
-                gameObject.GetComponent<NavMeshAgent>().enabled = false;
-
-                var thrust = Random.Range(200, 750);
-                Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
-                rb.MoveRotation(rb.rotation * deltaRotation);
-
-                rb.AddForce(transform.up * thrust);
-            }
-
-            time = 0;
-		}
-	}
 }

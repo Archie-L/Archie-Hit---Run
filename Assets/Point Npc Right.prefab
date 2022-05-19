@@ -878,6 +878,7 @@ GameObject:
   - component: {fileID: 7234210409809259620}
   - component: {fileID: 4502769154607307846}
   - component: {fileID: 2333091833824114049}
+  - component: {fileID: 2850508873363687828}
   m_Layer: 0
   m_Name: Point Npc Right
   m_TagString: npc
@@ -981,7 +982,6 @@ MonoBehaviour:
   bat: {fileID: 4901546644308599149}
   fist: {fileID: 666789434427142065}
   batCol: {fileID: 400189663512963520}
-  playerT: {fileID: 0}
   player: {fileID: 0}
   agent: {fileID: 6334887617590257272}
   health: 100
@@ -1914,6 +1914,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2850508873363687828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6334887617590257273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2036f407d9ccf404db91cbf2602f7208, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NPCHealth: 3
 --- !u!1 &6529065942621518982
 GameObject:
   m_ObjectHideFlags: 0

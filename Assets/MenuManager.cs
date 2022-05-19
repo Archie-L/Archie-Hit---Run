@@ -40,4 +40,9 @@ public class MenuManager : MonoBehaviour
 			SceneManager.LoadScene(levelToLoad);
 		}
 	}
+
+	public void ExitGame()
+	{
+		Application.Quit();
+	}
 }
