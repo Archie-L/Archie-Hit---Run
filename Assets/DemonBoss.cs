@@ -9,7 +9,6 @@ public class DemonBoss : MonoBehaviour
     public Animator anim;
     public GameObject self;
     public Transform selfT;
-    public BoxCollider fist;
     public Transform playerT;
     public GameObject player;
     public NavMeshAgent agent;
@@ -36,8 +35,6 @@ public class DemonBoss : MonoBehaviour
         bossBar.SetActive(false);
 
         state = State.Waiting;
-
-        fist.enabled = false;
 
         playerT = GameObject.Find("Player").transform;
         player = GameObject.Find("Player");
@@ -107,10 +104,18 @@ public class DemonBoss : MonoBehaviour
             {
                 if (time > coolDown)
                 {
+                    int randNumb = Random.Range(1, 3);
+                    if(randNumb == 1)
+                    {
+                        anim.SetTrigger("attack 1");
+                    }
+                    if (randNumb == 2)
+                    {
+                        anim.SetTrigger("attack 2");
+                    }
+
                     time = 0f;
-                    fist.enabled = true;
                     agent.speed = 0f;
-                    anim.SetTrigger("Attack");
                     Attacking = true;
                     StartCoroutine(Attack());
                     StartCoroutine(CooldownWait());
@@ -126,9 +131,8 @@ public class DemonBoss : MonoBehaviour
 
     IEnumerator Attack()
     {
-        new WaitForSeconds(1f);
+        new WaitForSeconds(1.6f);
         agent.speed = 0f;
-        fist.enabled = false;
         Attacking = false;
         Cooldown = true;
         yield break;
@@ -153,16 +157,5 @@ public class DemonBoss : MonoBehaviour
     {
         yield return new WaitForSeconds(10);
         Destroy(self.gameObject);
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("entered trigger");
-
-        if (other.gameObject.tag == "player fist" || other.gameObject.tag == "car bumper")
-        {
-            Debug.Log("damage");
-            health--;
-        }
     }
 }

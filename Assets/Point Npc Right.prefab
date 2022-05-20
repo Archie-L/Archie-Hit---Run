@@ -984,7 +984,7 @@ MonoBehaviour:
   batCol: {fileID: 400189663512963520}
   player: {fileID: 0}
   agent: {fileID: 6334887617590257272}
-  health: 100
+  health: 3
   WaitTime: 5
   UpTime: 8.5
   StopSpeed: 0

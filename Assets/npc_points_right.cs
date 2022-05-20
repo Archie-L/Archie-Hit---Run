@@ -29,6 +29,7 @@ public class npc_points_right : MonoBehaviour
     public int destPoint;
     public GameObject pointRand;
     public AudioSource fart, hurt, hit1, hit2, promo, npc1, npc2, karen, liquor;
+    float prevhealth;
 
     private enum State
     {
@@ -44,6 +45,8 @@ public class npc_points_right : MonoBehaviour
     void Start()
     {
         state = State.Normal;
+
+        prevhealth = health;
 
         pointRand = GameObject.Find("points");
 
@@ -78,7 +81,6 @@ public class npc_points_right : MonoBehaviour
         gameObject.GetComponent<NavMeshAgent>().enabled = true;
     }
 
-    float prevhealth;
 
     // Update is called once per frame
     void Update()
@@ -87,6 +89,7 @@ public class npc_points_right : MonoBehaviour
 
         if (health != prevhealth)
 		{
+            Debug.Log(prevhealth + "joe swanson" + health);
             hurt.Play();
 
             anim.SetTrigger("knocked");

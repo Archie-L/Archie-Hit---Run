@@ -23,7 +23,7 @@ public class damageMachiene : MonoBehaviour
     {
         if (slicing)
         {
-            Collider[] hitColliders = Physics.OverlapBox(box.transform.position, boxsize);
+            Collider[] hitColliders = Physics.OverlapBox(box.transform.position, boxsize, box.transform.rotation);
             foreach (Collider col in hitColliders)
             {
                 bool nuts = false;
@@ -57,9 +57,9 @@ public class damageMachiene : MonoBehaviour
     {
         if (slicing)
         {
+            Gizmos.matrix = box.transform.localToWorldMatrix;
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(box.transform.position, boxsize);
+            Gizmos.DrawWireCube(Vector3.zero, boxsize / box.transform.lossyScale.x);
         }
-
     }
 }
