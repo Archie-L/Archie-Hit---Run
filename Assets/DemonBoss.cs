@@ -19,7 +19,7 @@ public class DemonBoss : MonoBehaviour
     float time;
     public float health;
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
-    public float coolDown = 4f;
+    public float coolDown = 3f;
     public bool Angry, Attacking, Cooldown;
 
     private enum State
@@ -47,6 +47,8 @@ public class DemonBoss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        health = gameObject.GetComponent<health>().NPCHealth;
+
         bossBarSlider.value = health;
 
         if (health <= 0f)
@@ -76,7 +78,7 @@ public class DemonBoss : MonoBehaviour
 
         float dist = Vector3.Distance(playerT.position, selfT.position);
 
-        if (dist < 15f)
+        if (dist < 30f)
         {
             audioSource.Play();
             state = State.Angry;
@@ -96,9 +98,9 @@ public class DemonBoss : MonoBehaviour
 
         agent.speed = WalkSpeed;
 
-        if (agent.remainingDistance < 2f)
+        if (agent.remainingDistance < 15f)
         {
-            agent.speed = 0f;
+            agent.speed = StopSpeed;
 
             if (!Attacking && !Cooldown)
             {
@@ -115,7 +117,7 @@ public class DemonBoss : MonoBehaviour
                     }
 
                     time = 0f;
-                    agent.speed = 0f;
+                    agent.speed = StopSpeed;
                     Attacking = true;
                     StartCoroutine(Attack());
                     StartCoroutine(CooldownWait());
@@ -123,7 +125,7 @@ public class DemonBoss : MonoBehaviour
 
             }
         }
-        if (agent.remainingDistance > 2f)
+        if (agent.remainingDistance > 15f)
         {
             agent.speed = WalkSpeed;
         }
@@ -131,7 +133,7 @@ public class DemonBoss : MonoBehaviour
 
     IEnumerator Attack()
     {
-        new WaitForSeconds(1.6f);
+        new WaitForSeconds(2.13333333f);
         agent.speed = 0f;
         Attacking = false;
         Cooldown = true;
@@ -140,7 +142,7 @@ public class DemonBoss : MonoBehaviour
 
     IEnumerator CooldownWait()
     {
-        new WaitForSecondsRealtime(4f);
+        new WaitForSecondsRealtime(coolDown);
         Cooldown = false;
         yield break;
     }

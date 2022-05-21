@@ -147,7 +147,7 @@ public class npc_points_right : MonoBehaviour
         }
 
         float dist = Vector3.Distance(playerT.position, selfT.position);
-        if (dist < 300f)
+        if (dist < 200f)
         {
             state = State.Range;
         }
@@ -161,7 +161,7 @@ public class npc_points_right : MonoBehaviour
         agent.speed = StopSpeed;
 
         float dist = Vector3.Distance(playerT.position, selfT.position);
-        if (dist > 300f)
+        if (dist > 200f)
         {
             state = State.Normal;
         }

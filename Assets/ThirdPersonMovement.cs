@@ -28,14 +28,14 @@ public class ThirdPersonMovement : MonoBehaviour
     public Vector3 spawnPoint;
     public float spawnPointRange;
     float seconds = 10f;
-    bool spawned, rolling, wanted;
+    bool spawned, wanted;
+    public bool rolling;
 
     private enum State
     {
         Normal,
         Wanted,
-        Dead,
-        Rolling
+        Dead
     }
 
     void Start()
@@ -54,6 +54,15 @@ public class ThirdPersonMovement : MonoBehaviour
 	void Update()
     {
         health = gameObject.GetComponent<health>().NPCHealth;
+
+        if (rolling || Blocking)
+        {
+            this.gameObject.tag = "car bumper";
+        }
+        else
+        {
+            this.gameObject.tag = "Player";
+        }
 
         mSlider.value = health;
         pSlider.value = crimeMeter;
@@ -83,9 +92,6 @@ public class ThirdPersonMovement : MonoBehaviour
             case State.Dead:
                 Dead();
                 break;
-            case State.Rolling:
-                Roll();
-                break;
         }
     }
 
@@ -106,7 +112,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Space))
         {
-            state = State.Rolling;
             anim.SetTrigger("roll");
 		}
 
@@ -240,27 +245,6 @@ public class ThirdPersonMovement : MonoBehaviour
 
     }
 
-    void Roll()
-	{
-        rolling = true;
-        StartCoroutine(iFrames());
-	}
-
-    IEnumerator iFrames()
-	{
-        new WaitForSecondsRealtime(1.6f);
-        rolling = false;
-        if(wanted)
-		{
-            state = State.Wanted;
-		}
-		else
-		{
-            state = State.Normal;
-		}
-        yield break;
-    }
-
     void WantedController()
 	{
         float randomZ = Random.Range(-spawnPointRange, spawnPointRange);
@@ -286,7 +270,7 @@ public class ThirdPersonMovement : MonoBehaviour
 	{
 		if(other.gameObject.tag == "npc fist")
 		{
-            if (!Blocking || rolling)
+            if (!Blocking || !rolling)
             {
                 health--;
             }
@@ -294,7 +278,7 @@ public class ThirdPersonMovement : MonoBehaviour
 
         if (other.gameObject.tag == "bat")
         {
-			if (!Blocking || rolling)
+			if (!Blocking || !rolling)
             {
                 health = health - 2f;
             }
