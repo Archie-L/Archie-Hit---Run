@@ -8,6 +8,8 @@ public class SaveController : MonoBehaviour
 	public GameObject txt;
 	public Animator anim;
 	public ThirdPersonMovement tpm;
+	public int effigyNumb;
+	public int storyProgress;
 
 	private void Start()
 	{
@@ -33,8 +35,12 @@ public class SaveController : MonoBehaviour
 
 				anim.SetTrigger("pray");
 
+				storyProgress = GameObject.Find("Player").gameObject.GetComponent<ThirdPersonMovement>().storyProgress;
+
 				string activeScene = SceneManager.GetActiveScene().name;
 				PlayerPrefs.SetString("LevelSaved", activeScene);
+				PlayerPrefs.SetInt("effigyNumb", effigyNumb);
+				PlayerPrefs.SetInt("storyProgress", storyProgress);
 
 				Debug.Log(activeScene);
 				StartCoroutine(WaitTime());

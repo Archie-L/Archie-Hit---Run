@@ -21,6 +21,7 @@ public class HarveyFight : MonoBehaviour
     public float StopSpeed = 0f, WalkSpeed = 1.5f;
     public float coolDown = 4f;
     public bool Angry, Attacking, Parried, Cooldown;
+    public int playerProgress;
 
     private enum State
     {
@@ -183,8 +184,9 @@ public class HarveyFight : MonoBehaviour
     }
 
     IEnumerator DeathWait()
-	{
+    {
         yield return new WaitForSeconds(10);
+        player.gameObject.GetComponent<ThirdPersonMovement>().storyProgress++;
         Destroy(self.gameObject);
 	}
 }

@@ -14,6 +14,8 @@ public class MenuManager : MonoBehaviour
 		Disable.SetActive(false);
 		anim.SetTrigger("play");
 		StartCoroutine(WaitForAnim());
+
+		PlayerPrefs.SetInt("loadGame", 0);
 	}
 
 	IEnumerator WaitForAnim()
@@ -30,6 +32,8 @@ public class MenuManager : MonoBehaviour
 			Disable.SetActive(false);
 			anim.SetTrigger("play");
 			StartCoroutine(WaitForAnim2());
+
+			PlayerPrefs.SetInt("loadGame", 1);
 		}
 
 		IEnumerator WaitForAnim2()

@@ -42,6 +42,7 @@ public class DemonBoss : MonoBehaviour
         agent.speed = StopSpeed;
 
         gameObject.GetComponent<NavMeshAgent>().enabled = true;
+
     }
 
     // Update is called once per frame

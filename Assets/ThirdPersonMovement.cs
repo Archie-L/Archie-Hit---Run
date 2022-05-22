@@ -9,6 +9,7 @@ public class ThirdPersonMovement : MonoBehaviour
     public CharacterController controller;
     public Transform cam;
     public Slider mSlider, pSlider;
+    public Transform self;
     public bool Blocking, Parry;
     public float speed = 6f;
     public float health = 10f;
@@ -30,6 +31,11 @@ public class ThirdPersonMovement : MonoBehaviour
     float seconds = 10f;
     bool spawned, wanted;
     public bool rolling;
+    public int storyProgress;
+    int effigyNumb;
+    int loadGame;
+
+    public Transform eff1, eff2, eff3, eff4;
 
     private enum State
     {
@@ -48,6 +54,30 @@ public class ThirdPersonMovement : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         Clobbering = false;
+
+        loadGame = PlayerPrefs.GetInt("loadGame");
+        if(loadGame == 1)
+        {
+            effigyNumb = PlayerPrefs.GetInt("effigyNumb");
+            storyProgress = PlayerPrefs.GetInt("storyProgress");
+
+            if (effigyNumb == 1)
+            {
+                self.transform.position = eff1.position;
+            }
+            if (effigyNumb == 2)
+            {
+                self.transform.position = eff1.position;
+            }
+            if (effigyNumb == 3)
+            {
+                self.transform.position = eff1.position;
+            }
+            if (effigyNumb == 4)
+            {
+                self.transform.position = eff1.position;
+            }
+        }
     }
 
 	// Update is called once per frame
