@@ -9,6 +9,11 @@ public class MenuManager : MonoBehaviour
     public Animator anim;
     public GameObject Disable;
 
+    public void Start()
+	{
+		Cursor.lockState = CursorLockMode.None;
+	}
+
     public void NewGameButton()
 	{
 		Disable.SetActive(false);

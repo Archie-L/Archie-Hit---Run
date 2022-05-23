@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ThirdPersonMovement : MonoBehaviour
 {
@@ -32,10 +33,10 @@ public class ThirdPersonMovement : MonoBehaviour
     bool spawned, wanted;
     public bool rolling;
     public int storyProgress;
-    int effigyNumb;
-    int loadGame;
+    public int effigyNumb;
+    public int loadGame;
 
-    public Transform eff1, eff2, eff3, eff4;
+    public Transform[] effigies;
 
     private enum State
     {
@@ -58,25 +59,7 @@ public class ThirdPersonMovement : MonoBehaviour
         loadGame = PlayerPrefs.GetInt("loadGame");
         if(loadGame == 1)
         {
-            effigyNumb = PlayerPrefs.GetInt("effigyNumb");
-            storyProgress = PlayerPrefs.GetInt("storyProgress");
-
-            if (effigyNumb == 1)
-            {
-                self.transform.position = eff1.position;
-            }
-            if (effigyNumb == 2)
-            {
-                self.transform.position = eff1.position;
-            }
-            if (effigyNumb == 3)
-            {
-                self.transform.position = eff1.position;
-            }
-            if (effigyNumb == 4)
-            {
-                self.transform.position = eff1.position;
-            }
+            Respawn();
         }
     }
 
@@ -123,6 +106,14 @@ public class ThirdPersonMovement : MonoBehaviour
                 Dead();
                 break;
         }
+    }
+
+    void Respawn()
+    {
+        effigyNumb = PlayerPrefs.GetInt("effigyNumb");
+        storyProgress = PlayerPrefs.GetInt("storyProgress");
+
+        transform.position = effigies[effigyNumb - 1].position;
     }
 
     void CharacterMovement()
@@ -318,6 +309,13 @@ public class ThirdPersonMovement : MonoBehaviour
     void Dead()
     {
         anim.SetTrigger("die");
+        StartCoroutine(Death());
+    }
+
+    IEnumerator Death()
+    {
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene("test scene");
     }
 
 	void Walk()

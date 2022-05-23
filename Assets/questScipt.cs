@@ -6,7 +6,8 @@ public class questScipt : MonoBehaviour
 {
     public int numbProgress;
     public int playerProgress;
-    public GameObject player;
+    public GameObject player, compass;
+    public Transform newTarget;
 
     // Update is called once per frame
     void Update()
@@ -18,6 +19,7 @@ public class questScipt : MonoBehaviour
             if (numbProgress == playerProgress)
             {
                 transform.GetChild(i).gameObject.SetActive(true);
+                compass.GetComponent<compass>().target = newTarget;
             }
             else
             {

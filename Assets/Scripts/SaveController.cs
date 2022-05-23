@@ -41,6 +41,7 @@ public class SaveController : MonoBehaviour
 				PlayerPrefs.SetString("LevelSaved", activeScene);
 				PlayerPrefs.SetInt("effigyNumb", effigyNumb);
 				PlayerPrefs.SetInt("storyProgress", storyProgress);
+				PlayerPrefs.Save();
 
 				Debug.Log(activeScene);
 				StartCoroutine(WaitTime());

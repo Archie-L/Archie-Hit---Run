@@ -159,6 +159,7 @@ public class DemonBoss : MonoBehaviour
     IEnumerator DeathWait()
     {
         yield return new WaitForSeconds(10);
+        player.gameObject.GetComponent<ThirdPersonMovement>().storyProgress++;
         Destroy(self.gameObject);
     }
 }

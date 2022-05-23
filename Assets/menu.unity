@@ -1241,7 +1241,6 @@ GameObject:
   m_Component:
   - component: {fileID: 645929929332638508}
   - component: {fileID: 269403943897536919}
-  - component: {fileID: 269403943897536920}
   m_Layer: 0
   m_Name: POSTER
   m_TagString: Untagged
@@ -1268,20 +1267,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &269403943897536920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 269403943897536918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bf947fd7c51cb2429b73cc3041151c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 269403943897536919}
-  Disable: {fileID: 566941837}
 --- !u!33 &424580711518033904
 MeshFilter:
   m_ObjectHideFlags: 0
